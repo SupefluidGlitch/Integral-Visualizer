@@ -1,0 +1,94 @@
+k = Input["Choose Axis"]
+
+fx = Input["Insert function"]
+
+a = Input["Starting Point"]
+
+b = Input["End Point"]
+
+dx = Input["deltax?"]
+
+
+ClearAll
+
+If[k > 0,
+
+
+f[x_] := fx;
+
+
+vals = Table[f[x], {x, a, b, dx}];
+
+absvals = Abs[vals];
+
+length = Length[vals];
+
+
+p = x /. Solve[{y == fx, x > 0}, x, Reals];
+
+cool = Normal[p];
+
+valsY = Flatten[Table[cool, {y, a, b, dx}]];
+
+absvalsY = Abs[valsY];
+
+
+s = Table[
+
+Cylinder[{{0, 0, ((g)*(dx) + a - dx)}, {0,
+
+0, ((g)*(dx) + a - dx) + (dx)}},
+
+Take[absvalsY, {g}(*radius*)]], {g, 1, (length), 1}];
+
+Peel = RevolutionPlot3D[1.05*f[x], {x, a, b},
+
+RevolutionAxis -> {1, 0, 0},
+
+PlotStyle -> {Opacity[0.4], Red}];
+
+
+core = Graphics3D[s];
+
+Show[core, Boxed -> False, AxesOrigin -> {0, 0, 0}, Axes -> True,
+
+AxesStyle -> Thick, ViewPoint -> {0, 3, 1}],
+
+
+f[x_] := fx;
+
+vals = Table[f[x], {x, a, b, dx}];
+
+absvals = Abs[vals];
+
+length = Length[vals];
+
+s = Table[
+
+Cylinder[{{((g)*(dx) + a - dx), 0, 0}, {((g)*(dx) + a - dx) + (dx),
+
+0, 0}},
+
+Take[absvals, {g}]], {g, 1, (length - 1), 1}];
+
+Peel = RevolutionPlot3D[1.05*f[x], {x, a, b},
+
+RevolutionAxis -> {1, 0, 0},
+
+PlotStyle -> {Opacity[0.4], Red}];
+
+
+core = Graphics3D[s, Boxed -> False, AxesOrigin -> {0, 0, 0},
+
+Axes -> True];
+
+
+
+
+Show[core, Boxed -> False, AxesOrigin -> {0, 0, 0}, Axes -> True,
+
+ViewPoint -> {0, -1, 0}, AxesStyle -> Thick,
+
+ZoomFactor -> Automatic,
+
+DisplayFunction -> (PopupWindow[Button ["Click Here"], #] &)]]
